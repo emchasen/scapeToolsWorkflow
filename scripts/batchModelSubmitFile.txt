@@ -1,0 +1,13 @@
+executable 		= batchModelBashScript.sh
+arguments               = $(crop) 
+request_cpus            = 1
+Notify_user             = emchasen@wisc.edu
+Notification		= Always
+
+output = $(crop).output
+error = $(crop).error
+log = $(crop).log
+request_memory = 32G
+initialdir=$(crop)
+
+queue crop from modelJobsList.txt

@@ -1,0 +1,13 @@
+universe		= vanilla
+request_cpus            = 1
+request_memory          = 16G
+Executable              = bashScript.sh
+Should_Transfer_Files   = IF_NEEDED
+When_To_Transfer_Output = On_Exit
+Notify_user             = emchasen@wisc.edu
+Notification		= Always
+#input                  = $
+output                  = out.txt
+Error                   = submit.err
+Log                     = submit.log
+Queue

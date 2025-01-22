@@ -1,0 +1,14 @@
+executable 		= batchbashScript.sh
+arguments               = $(prop) $(res)
+request_cpus            = 1
+Notify_user             = emchasen@wisc.edu
+Notification		= Always
+
+output = $(prop)$(res).output
+error = $(prop)$(res).error
+log = $(prop)$(res).log
+request_memory = $(mem)G
+initialdir=$(prop)$(res)
+
+queue prop res mem from jobsClassList.txt
+

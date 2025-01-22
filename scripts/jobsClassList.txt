@@ -1,0 +1,8 @@
+drainage 10 16
+drainage 30 8
+farmClass 30 8
+hydgrp 10 16 
+hydgrp 30 8 
+landClass 30 8
+nresponse 10 16
+nresponse 30 8
