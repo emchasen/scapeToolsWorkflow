@@ -42,12 +42,25 @@ all of the scripts needed to create a new region in grazescape and smartscape
 5.1.1. in the above scripts, edit the file names along with the initialP value (found around line 60 in each script). To determine the initialP value for each region, use the scripts/modelRasterScripts/soilP.R
 
 6. check that rasters are read into geoserver, and convert CRS as necessary
-6.1. checking rasters in geoserver
-6.1.1 open geoserver and log in (http://localhost:8080/geoserver/web/?0, )
-6.2. convert CRS for all rasters within a folder
-6.2.1. create an environment (ask Matthew for help)
-6.2.2. change working directory in terminal to work in new environment
-6.2.3. 
+6.1. starting and opening geoserver
+6.1.1. if you don't already have geoserver installed, download at https://geoserver.org/download/
+6.1.2. start geoserver on your local machine by navigating in the terminal to geoserver_version/bin
+6.1.3. sh startup.sh
+6.1.4. open geoserver and log in (http://localhost:8080/geoserver/web/?0) user: admin; password: geoserver
+6.2. confirming if a raster can be used in geoserver
+6.2.1. click "Import Data", choose the file or directory, click "next"
+6.2.2. if nothing loads, or you can an error here, it means the raster does not have the correct metadata
+6.2.3. if it loads, import it and view the layer preview (on make, I had to change the format from JPEG to TIFF by clicking on the 3 dots on the top left to open the options)
+6.3. convert CRS for all rasters within a folder
+6.3.1. create an environment (ask Matthew for help)
+6.3.2. put the file scripts/newConvertCRS.py in the folder with the environment
+6.3.3. edit the newConvertCRS.py so that there is a working TIFF for "base_file" and "src_dir" is the file of folders with rasters to be converted.
+6.3.3.1. for each region, import one grazescape and one smartscape raster layer into qgis and export them. this creates a working tiff file for each region and resolution. Be sure to use the correct region and resolution as the base_file in the newConvertCRS.py file.
+6.4. running the newConvertCRS.py
+6.4.1. use terminal to navigate to the folder with the environment and newConvertCRS.py
+6.4.2. type "conda activate 'environmentName'"
+6.4.3. type "python newConvertCRS.py"
+6.4.4. double check that the rasters are not able to be read in geoserver
 
 
 * notes for using the remote computing services. 

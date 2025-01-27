@@ -8,8 +8,8 @@ library(raster)
 
 #Load distance to stream and distance to water rasters
 
-stream <- raster("waterData/eastCentralWI_distanceToStreams.tiff")
-water <- raster("waterData/eastCentralWI_distanceToWater.tiff")
+stream <- raster("waterData/southEastWI_distanceToStreams.tiff")
+water <- raster("waterData/southEastWI_distanceToWater.tiff")
 
 #Plot data
 plot(stream)
@@ -43,11 +43,11 @@ plot(distRaster)
 ## Resample and cut using smartscape raster
 #The raster needs to align perfectly with all of the other rasters in smartscape
 # crop to learning hub shapefil
-lh <- st_read("soilShapes/eastCentralWI.shp")
+lh <- st_read("soilShapes/southEastWI.shp")
 streamCRS <- st_crs(stream)
 lh_stream <- st_transform(lh, streamCRS)
 #load smartscape raster to align grid cells
-ssRaster <- raster("rasterOutputs/eastCentralWI/smartScape/eastCentralWI_slopePer_30m.tiff")
+ssRaster <- raster("rasterOutputs/smartScape/southEastWI/modelInputs/southEastWI_awc_30m.tif")
 ssRaster
 distRaster
 plot(ssRaster)
@@ -65,7 +65,7 @@ new_distance <- resample(dist_crop2, blank_raster, method = "bilinear")
 plot(new_distance)
 new_distance
 ssRaster
-writeRaster(new_distance, "rasterOutputs/eastCentralWI/smartScape/eastCentralWI_distanceToWaterWays.tif",
+writeRaster(new_distance, "rasterOutputs/smartScape/southEastWI/modelInputs/southEastWI_distanceToWaterWays.tif",
             format = "GTiff",
             overwrite = TRUE,
             NAflag = -9999)

@@ -42,7 +42,7 @@ library(tidyverse)
 #             format = "GTiff")
 # 
 # load base raster for crs
-baseRaster = raster("rasterOutputs/raster_base_projection.tif")
+baseRaster = raster("rasterInputs/raster_base_projection.tif")
 newCRS = crs(baseRaster)
 #newLand = projectRaster(land_recl, crs = newCRS, method = "ngb")
 
@@ -58,13 +58,13 @@ newCRS = crs(baseRaster)
 # start here------------------------
 # load clipped wiscland layer
 
-wl_region <- raster("rasterOutputs/eastCentralWI/eastCentralWI_WL_3857.tif") 
+wl_region <- raster("rasterInputs/southEastWI_WL_3857.tif") 
 
 summary(wl_region)
 
 # load smartscape soil layer raster previously created for region
 
-baseShape <- raster("rasterOutputs/eastCentralWI/smartScape/eastCentralWI_slopelen_30m.tifF")
+baseShape <- raster("rasterOutputs/smartScape/southEastWI/modelInputs/southEastWI_slopelen_30m.tiff")
 
 # reproject into new raster with correct res
 raster_blank <- raster(crs = crs(newCRS),
@@ -78,7 +78,7 @@ plot(wl_newRes)
 wl_newRes
 
 # create filename: 
-filename = paste0("rasterOutputs/eastCentralWI/smartScape/eastCentralWI_WiscLand_30m.tif")
+filename = paste0("rasterOutputs/smartScape/southEastWI/modelInputs/southEastWI_WiscLand_30m.tiff")
 # resave wiscland raster
 raster::writeRaster(wl_newRes, 
                     filename = filename,

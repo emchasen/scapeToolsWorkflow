@@ -17,18 +17,18 @@ library(sf)
  # elevation from DEM (fit to other rasters)------------------
 
 # load base projection
-CRS3857 <- rast("rasterOutputs/raster_base_projection.tif")
+CRS3857 <- rast("rasterInputs/raster_base_projection.tif")
 # load dem
-dem = rast("rasterOutputs/southEastWI/southEastWI_DEM.tif")
+dem = rast("rasterInputs/southEastWI_DEM.tif")
 # load one raster made from ssurgo data frame
-shape = rast("rasterOutputs/southEastWI/grazeScape/southEastWI_slopelen_10m.tif")
+shape = rast("rasterOutputs/smartScape/southEastWI/modelInputs/southEastWI_slopelen_30m.tif")
 #match crs and extent
 crs(dem) <- terra::crs(shape)
 ext(dem) <- terra::ext(shape)
 # resample dem to align with ssurgo rasters
 new_elev <- terra::resample(dem, shape, method = "bilinear")
 
-filename = "rasterOutputs/southEastWI/grazeScape/southEastWI_elev_10m.tiff"
+filename = "rasterOutputs/smartScape/southEastWI/modelInputs/southEastWI_DEM_30m.tiff"
 # write the raster
 terra::writeRaster(new_elev, filename = filename,
             overwrite = TRUE,
@@ -37,7 +37,7 @@ terra::writeRaster(new_elev, filename = filename,
 # dem to slope percent----------------------------
 
 # load created raster 
-dem <- rast("rasterOutputs/southEastWI/grazeScape/southEastWI_elev_10m.tiff")
+dem <- rast("rasterOutputs/smartScape/southEastWI/modelInputs/southEastWI_DEM_30m.tiff")
 # convert elevation  - feet to meters - 
 dem_m <- dem * 0.3048
 ## convert to radians -------------------
@@ -49,7 +49,7 @@ summary(slope_rad)
 slope_per <- app(slope_rad, fun = function(x) {round(tan(x)*100,2)})
 slope_per
 plot(slope_per)
-filename = "rasterOutputs/southEastWI/grazeScape/southEastWI_slopePer_10m.tiff"
+filename = "rasterOutputs/smartScape/southEastWI/modelInputs/southEastWI_slopePer_30m.tiff"
 writeRaster(slope_per, filename,
             overwrite = TRUE,
             NAflag = -9999)
@@ -57,8 +57,8 @@ writeRaster(slope_per, filename,
 # slope and slopelength to LS--------------------
 
 # load slopelength for the region and resolution
-slopelen <- rast("rasterOutputs/southEastWI/grazeScape/southEastWI_slopelen_10m.tif")
-
+slopelen <- rast("rasterOutputs/smartScape/southEastWI/modelInputs/southEastWI_slopelen_30m.tif")
+plot(slopelen)
 # function for calculating factor
 factorFun <- function(x) {
   ifelse(between(x, 3.01, 4), 0.4, 
@@ -76,7 +76,7 @@ LSfun <- function(x,y,z) {
 #LS <- lapp(slope_per, slopelen, factor, fun = LSfun)
 LS <- LSfun(slope_per, slopelen, factor)
 
-filename = paste0("rasterOutputs/southEastWI/grazeScape/southEastWI_LS_10m.tif")
+filename = paste0("rasterOutputs/smartScape/southEastWI/modelInputs/southEastWI_LS_30m.tiff")
 
 writeRaster(LS, filename,
             overwrite = TRUE,

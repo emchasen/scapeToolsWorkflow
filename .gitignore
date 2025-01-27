@@ -3,3 +3,10 @@
 .RData
 .Ruserdata
 /csvs
+/EXTRACTIONS
+/modelOutputs
+/rasterOutputs
+/rasterInputs
+/snapplusOutput
+/soilShapes
+/waterData

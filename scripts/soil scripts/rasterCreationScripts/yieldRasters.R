@@ -4,9 +4,9 @@ library(terra)
 library(tidyverse)
 library(raster)
 
-soy <- raster("rasterOutputs/soyYield_rfPred_2008to2017_x10_northCentralUS.tif")
-corn <- raster("rasterOutputs/cornYield_rfPred_2008to2017-x10_northCentralUS.TIF")
-baseRaster <- raster("rasterOutputs/raster_base_projection.tif")
+soy <- raster("rasterInputs/soyYield_rfPred_2008to2017_x10_northCentralUS.tif")
+corn <- raster("rasterInputs/cornYield_rfPred_2008to2017-x10_northCentralUS.TIF")
+baseRaster <- raster("rasterInputs/raster_base_projection.tif")
 
 # southEastWI-----------------
 
@@ -44,19 +44,19 @@ writeRaster(soy_new, "rasterOutputs/southEastWI/grazeScape/southEastWI_soy_10m.t
             overwrite = TRUE,
             NAflag = -9999)
 # for smartscape
-southEastRaster_30 <- raster("rasterOutputs/southEastWI/smartScape/southEastWI_slopelen_30m.tif")
+southEastRaster_30 <- raster("rasterOutputs/smartScape/southEastWI/modelInputs/southEastWI_slopelen_30m.tif")
 extPrj <- extent(southEastRaster_30)
 blankRaster <- raster(crs = crs(baseRaster),
                       vals = 0,
                       resolution = c(30, 30),
                       ext = extPrj)
 corn_new <- resample(southEastCorn_3857, blankRaster, method = "bilinear")
-writeRaster(corn_new, "rasterOutputs/southEastWI/smartScape/southEastWI_corn_30m.tif",
+writeRaster(corn_new, "rasterOutputs/smartScape/southEastWI/modelOutputs/corn_Yield_southEastWI.tif",
             format = "GTiff",
             overwrite = TRUE,
             NAflag = -9999)
 soy_new <- resample(southEastSoy_3857, blankRaster, method = 'bilinear')
-writeRaster(soy_new, "rasterOutputs/southEastWI/smartScape/southEastWI_soy_30m.tif",
+writeRaster(soy_new, "rasterOutputs/smartScape/southEastWI/modelOutputs/soy_Yield_southEastWI.tif",
             format = "GTiff",
             overwrite = TRUE,
             NAflag = -9999)
@@ -98,19 +98,19 @@ writeRaster(soy_new, "rasterOutputs/eastCentralWI/grazeScape/eastCentralWI_soy_1
             overwrite = TRUE,
             NAflag = -9999)
 # for smartscape
-eastCentralRaster_30 <- raster("rasterOutputs/eastCentralWI/smartScape/eastCentralWI_slopelen_30m.tiff")
+eastCentralRaster_30 <- raster("rasterOutputs/smartScape/eastCentralWI/modelInputs/eastCentralWI_slopelen_30m.tiff")
 extPrj <- extent(eastCentralRaster_30)
 blankRaster <- raster(crs = crs(baseRaster),
                       vals = 0,
                       resolution = c(30, 30),
                       ext = extPrj)
 corn_new <- resample(eastCentralCorn_3857, blankRaster, method = "bilinear")
-writeRaster(corn_new, "rasterOutputs/eastCentralWI/smartScape/eastCentralWI_corn_30m.tif",
+writeRaster(corn_new, "rasterOutputs/smartScape/eastCentralWI/modelOutputs/corn_Yield_eastCentralWI.tif",
             format = "GTiff",
             overwrite = TRUE,
             NAflag = -9999)
 soy_new <- resample(eastCentralSoy_3857, blankRaster, method = 'bilinear')
-writeRaster(soy_new, "rasterOutputs/eastCentralWI/smartScape/eastCentralWI_soy_30m.tif",
+writeRaster(soy_new, "rasterOutputs/smartScape/eastCentralWI/modelOutputs/soy_Yield_eastCentralWI.tif",
             format = "GTiff",
             overwrite = TRUE,
             NAflag = -9999)
