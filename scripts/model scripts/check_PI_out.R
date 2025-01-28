@@ -38,12 +38,10 @@ cc <- full %>%
 
 summary(cc)
 
- ccBack <- readRDS("modelOutputs/eastCentralWI/pi/condorOutput/ccPI_stepBack_eastCentralWI.rds")
-
+ccBack <- readRDS("modelOutputs/eastCentralWI/pi/condorOutput/ccPI_stepBack_eastCentralWI.rds")
 
 # null hypothesis
 cc.best.guess <- round(mean(cc$PI),2) #southEast WI: 2.96; eastCentral WI: 2.08
-
 
 #partition data
 set.seed(123)
@@ -91,16 +89,9 @@ tidy_cc <-
                OM:silt + OM:k + silt:k,
       data = train)
 
-cc_mod <- readRDS("/Volumes/cgratton/scapetools/serverReady/grazeScape/modelFiles/southWestWI/cc_ploss_southWestWI.rds")
-cc_mod
-
 cc_pred <- tidy_cc %>%
   predict(test) %>%
   bind_cols(test)
-
-cc_pred <- cc_mod %>%
- predict(test) %>%
- bind_cols(test)
 
 ggplot(cc_pred, aes(x = PI, y = .pred)) +
   geom_point()
@@ -189,12 +180,6 @@ cg_pred <- tidy_cg %>%
   predict(test) %>%
   bind_cols(test)
 
-cg_mod <- readRDS("/Volumes/cgratton/scapetools/serverReady/grazeScape/modelFiles/southWestWI/cg_ploss_southWestWI.rds")
-
-cg_pred <- cg_mod %>%
- predict(test) %>%
- bind_cols(test)
-
 ggplot(cg_pred, aes(x = PI, y = .pred)) +
   geom_point()
 
@@ -278,12 +263,6 @@ tidy_cso <-
 cso_pred <- tidy_cso %>%
   predict(test) %>%
   bind_cols(test)
-
-cso_mod <- readRDS("/Volumes/cgratton/scapetools/serverReady/grazeScape/modelFiles/southWestWI/cso_ploss_southWestWI.rds")
-
-cso_pred <- cso_mod %>%
- predict(test) %>%
- bind_cols(test)
 
 ggplot(cso_pred, aes(x = PI, y = .pred)) +
   geom_point()
@@ -374,12 +353,6 @@ dr_pred <- tidy_dr %>%
   predict(test) %>%
   bind_cols(test)
 
-dr_mod <- readRDS("/Volumes/cgratton/scapetools/serverReady/grazeScape/modelFiles/southWestWI/dr_ploss_southWestWI.rds")
-
-dr_pred <- dr_mod %>%
- predict(test) %>%
- bind_cols(test)
-
 ggplot(dr_pred, aes(x = PI, y = .pred)) +
   geom_point()
 
@@ -393,43 +366,43 @@ rsq <- 1 - rss/tss
 
 # pasture seeding ------------------------------
 
-# clean data
-ps <- full %>%
- filter(crop == "ps",
-        OM < 20) %>%
- mutate_if(is.character, as.factor)%>%
- dplyr::select(c(PI, Erosion, tillage, Contour, initialP, total_DM_lbs, totalP2O5_lbs, slope, slopelenusle.r, LSsurgo,
-                 total.depth, OM, silt, k, R_factor)) %>%
- mutate(Contour = as.factor(Contour)) %>%
- distinct() %>%
- droplevels()
-
-# null hypothesis
-ps.best.guess <- round(mean(ps$PI),2) # southeast WI = 1.57; eastCentral WI: 1.16
-
-#partition data
-set.seed(123)
-inTrain <- createDataPartition(y = ps$PI, p = 0.7, list = FALSE)
-train <- ps[inTrain,]
-test <- ps[-inTrain,]
-
-# Evaluate RMSE
-ps.RMSE.baseline <- round(sqrt(mean((ps.best.guess-test$PI)^2)),2)
-
-ps_mod <- readRDS("/Volumes/cgratton/scapetools/serverReady/grazeScape/modelFiles/southWestWI/ps_ploss_southWestWI.rds")
-
-ps_pred <- ps_mod %>%
- predict(test) %>%
- bind_cols(test)
-
-ggplot(ps_pred, aes(x = PI, y = .pred)) +
- geom_point()
-
-ps_rmse <- round(sqrt(mean((ps_pred$.pred - ps_pred$PI)^2)),3)
-
-rss <- sum((ps_pred$.pred - ps_pred$PI) ^ 2)  ## residual sum of squares
-tss <- sum((ps_pred$PI - mean(ps_pred$PI)) ^ 2)  ## total sum of squares
-rsq <- 1 - rss/tss
+# # clean data
+# ps <- full %>%
+#  filter(crop == "ps",
+#         OM < 20) %>%
+#  mutate_if(is.character, as.factor)%>%
+#  dplyr::select(c(PI, Erosion, tillage, Contour, initialP, total_DM_lbs, totalP2O5_lbs, slope, slopelenusle.r, LSsurgo,
+#                  total.depth, OM, silt, k, R_factor)) %>%
+#  mutate(Contour = as.factor(Contour)) %>%
+#  distinct() %>%
+#  droplevels()
+# 
+# # null hypothesis
+# ps.best.guess <- round(mean(ps$PI),2) # southeast WI = 1.57; eastCentral WI: 1.16
+# 
+# #partition data
+# set.seed(123)
+# inTrain <- createDataPartition(y = ps$PI, p = 0.7, list = FALSE)
+# train <- ps[inTrain,]
+# test <- ps[-inTrain,]
+# 
+# # Evaluate RMSE
+# ps.RMSE.baseline <- round(sqrt(mean((ps.best.guess-test$PI)^2)),2)
+# 
+# ps_mod <- readRDS("/Volumes/cgratton/scapetools/serverReady/grazeScape/modelFiles/southWestWI/ps_ploss_southWestWI.rds")
+# 
+# ps_pred <- ps_mod %>%
+#  predict(test) %>%
+#  bind_cols(test)
+# 
+# ggplot(ps_pred, aes(x = PI, y = .pred)) +
+#  geom_point()
+# 
+# ps_rmse <- round(sqrt(mean((ps_pred$.pred - ps_pred$PI)^2)),3)
+# 
+# rss <- sum((ps_pred$.pred - ps_pred$PI) ^ 2)  ## residual sum of squares
+# tss <- sum((ps_pred$PI - mean(ps_pred$PI)) ^ 2)  ## total sum of squares
+# rsq <- 1 - rss/tss
 
 # pasture ---------------------------------------------------------
   
@@ -492,12 +465,6 @@ pt_pred <- tidy_pt %>%
   predict(test) %>%
   bind_cols(test)
 
-pt_mod <- readRDS("/Volumes/cgratton/scapetools/serverReady/grazeScape/modelFiles/southWestWI/pt_ploss_southWestWI.rds")
-
-pt_pred <- pt_mod %>%
- predict(test) %>%
- bind_cols(test)
-
 ggplot(pt_pred, aes(x = PI, y = .pred)) +
   geom_point()
 
@@ -529,39 +496,39 @@ ggplot(predsOff, aes(x = OM, y = error)) +
 
 # dry lot-----------------
 
-#clean data
-dl <- full %>%
- filter(crop == "dl",
-        OM < 20) %>%
- mutate_if(is.character, as.factor) %>%
- dplyr::select(c(PI, Erosion, density, initialP, total_DM_lbs, totalP2O5_lbs, slope, slopelenusle.r, LSsurgo,
-                 total.depth, OM, silt, k, R_factor)) %>%
- distinct() %>%
- droplevels()
-
-# null hypothesis
-dl.best.guess <- round(mean(dl$PI),2) #9.17
-
-#partition data
-set.seed(123)
-inTrain <- createDataPartition(y = dl$PI, p = 0.7, list = FALSE)
-train <- dl[inTrain,]
-test <- dl[-inTrain,]
-
-# Evaluate RMSE
-dl.RMSE.baseline <- round(sqrt(mean((dl.best.guess-test$PI)^2)),2) #10.85
-
-dl_mod <- readRDS("/Volumes/cgratton/scapetools/serverReady/grazeScape/modelFiles/southWestWI/dl_ploss_southWestWI.rds")
-
-dl_pred <- dl_mod %>%
- predict(test) %>%
- bind_cols(test)
-
-ggplot(dl_pred, aes(x = PI, y = .pred)) +
- geom_point()
-
-dl_rmse <- round(sqrt(mean((dl_pred$.pred - dl_pred$PI)^2)),3)
-
-rss <- sum((dl_pred$.pred - dl_pred$PI) ^ 2)  ## residual sum of squares
-tss <- sum((dl_pred$PI - mean(dl_pred$PI)) ^ 2)  ## total sum of squares
-rsq <- 1 - rss/tss
+# #clean data
+# dl <- full %>%
+#  filter(crop == "dl",
+#         OM < 20) %>%
+#  mutate_if(is.character, as.factor) %>%
+#  dplyr::select(c(PI, Erosion, density, initialP, total_DM_lbs, totalP2O5_lbs, slope, slopelenusle.r, LSsurgo,
+#                  total.depth, OM, silt, k, R_factor)) %>%
+#  distinct() %>%
+#  droplevels()
+# 
+# # null hypothesis
+# dl.best.guess <- round(mean(dl$PI),2) #9.17
+# 
+# #partition data
+# set.seed(123)
+# inTrain <- createDataPartition(y = dl$PI, p = 0.7, list = FALSE)
+# train <- dl[inTrain,]
+# test <- dl[-inTrain,]
+# 
+# # Evaluate RMSE
+# dl.RMSE.baseline <- round(sqrt(mean((dl.best.guess-test$PI)^2)),2) #10.85
+# 
+# dl_mod <- readRDS("/Volumes/cgratton/scapetools/serverReady/grazeScape/modelFiles/southWestWI/dl_ploss_southWestWI.rds")
+# 
+# dl_pred <- dl_mod %>%
+#  predict(test) %>%
+#  bind_cols(test)
+# 
+# ggplot(dl_pred, aes(x = PI, y = .pred)) +
+#  geom_point()
+# 
+# dl_rmse <- round(sqrt(mean((dl_pred$.pred - dl_pred$PI)^2)),3)
+# 
+# rss <- sum((dl_pred$.pred - dl_pred$PI) ^ 2)  ## residual sum of squares
+# tss <- sum((dl_pred$PI - mean(dl_pred$PI)) ^ 2)  ## total sum of squares
+# rsq <- 1 - rss/tss

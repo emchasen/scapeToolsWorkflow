@@ -64,7 +64,7 @@ summary(wl_region)
 
 # load smartscape soil layer raster previously created for region
 
-baseShape <- raster("rasterOutputs/smartScape/southEastWI/modelInputs/southEastWI_slopelen_30m.tiff")
+baseShape <- raster("rasterOutputs/smartScape/southEastWI/modelInputs/southEastWI_slopelen_30m.tif")
 
 # reproject into new raster with correct res
 raster_blank <- raster(crs = crs(newCRS),

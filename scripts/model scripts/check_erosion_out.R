@@ -29,7 +29,6 @@ full <- bind_rows(sheb, fdl, gl, dod, wash, ozak, cal)
 rm(list = c("sheb", "fdl", "gl", "dod", "wash", "ozak", "cal"))
 
 
-
 # cont corn ---------------------------------------------------------------
 
 cc <- full %>%
@@ -49,8 +48,7 @@ cc.RMSE.baseline <- round(sqrt(mean((cc.best.guess-cc$Erosion)^2)),2)
 
 
 #load model
-cc_mod <- readRDS("modelOutputs/eastCentralWI/erosion/cc_erosion_eastCentralWI.rds")
-cc_mod <- readRDS("/Volumes/cgratton/scapetools/serverReady/grazeScape/modelFiles/southWestWI/cc_erosion_southWestWI.rds")
+cc_mod <- readRDS("modelOutputs/southEastWI/erosion/cc_erosion_southEastWI3.rds")
 cc_mod
 
 # predictions
@@ -86,8 +84,7 @@ cg.best.guess <- round(mean(cg$Erosion),2)
 cg.RMSE.baseline <- round(sqrt(mean((cg.best.guess-cg$Erosion)^2)),2)
 
 #load model
-cg_mod <- readRDS("modelOutputs/eastCentralWI/erosion/cg_erosion_eastCentralWI.rds")
-cg_mod <- readRDS("/Volumes/cgratton/scapetools/serverReady/grazeScape/modelFiles/southWestWI/cg_erosion_southWestWI.rds")
+cg_mod <- readRDS("modelOutputs/southEastWI/erosion/cg_erosion_southEastWI3.rds")
 cg_mod
 cg_mod$fit$importance
 
@@ -124,8 +121,7 @@ cso.best.guess <- round(mean(cso$Erosion),2)
 cso.RMSE.baseline <- round(sqrt(mean((cso.best.guess-cso$Erosion)^2)),2)
 
 #load model
-cso_mod <- readRDS("modelOutputs/eastCentralWI/erosion/cso_erosion_eastCentralWI.rds")
-cso_mod <- readRDS("/Volumes/cgratton/scapetools/serverReady/grazeScape/modelFiles/southWestWI/cso_erosion_southWestWI.rds")
+cso_mod <- readRDS("modelOutputs/southEastWI/erosion/cso_erosion_southEastWI3.rds")
 cso_mod
 
 cso_mod$fit$importance
@@ -168,8 +164,7 @@ dr.best.guess <- round(mean(dr$Erosion),2)
 dr.RMSE.baseline <- round(sqrt(mean((dr.best.guess-dr$Erosion)^2)),2)
 
 #load model
-dr_mod <- readRDS("modelOutputs/southEastWI/erosion/dr_erosion_southEastWI_ero4.rds")
-dr_mod <- readRDS("/Volumes/cgratton/scapetools/serverReady/grazeScape/modelFiles/southWestWI/dr_erosion_southWestWI.rds")
+dr_mod <- readRDS("modelOutputs/southEastWI/erosion/dr_erosion_southEastWI5.rds")
 dr_mod
 dr_mod$fit$importance
 
@@ -191,42 +186,41 @@ rsq <- 1 - rss/tss
 
 # ps ----------------------------------------------------------------------
 
-  # clean data
-  ps <- full %>%
-  filter(crop == "ps") %>%
-  mutate_if(is.character, as.factor) %>%
-  dplyr::select(c(Erosion, tillage, Contour, total_DM_lbs, slope, slopelenusle.r, sand, silt, clay, k)) %>%
-  mutate(Contour = as.factor(Contour)) %>%
-  distinct() %>%
-  droplevels()
-
-# null hypothesis
-ps.best.guess <- round(mean(ps$Erosion),2) 
-
-# Evaluate RMSE
-ps.RMSE.baseline <- round(sqrt(mean((ps.best.guess-ps$Erosion)^2)),2)
-
-
-#load model
-ps_mod <- readRDS("modelsFromCondor/southWest/erosion/ps_erosion_southWestWI.rds")
-ps_mod <- readRDS("/Volumes/cgratton/scapetools/serverReady/grazeScape/modelFiles/southWestWI/ps_erosion_southWestWI.rds")
-ps_mod
-
-ps_mod$fit$importance
-
-# predictions
-pred_ps <- ps_mod %>%
-  predict(ps) %>%
-  bind_cols(ps)
-
-ps_rmse <- round(sqrt(mean((pred_ps$.pred - pred_ps$Erosion)^2)),3) 
-# plot data
-ggplot(pred_ps, aes(x = Erosion, y = .pred)) +
-  geom_point() 
-
-rss <- sum((pred_ps$.pred - pred_ps$Erosion) ^ 2)  ## residual sum of squares
-tss <- sum((pred_ps$Erosion - mean(pred_ps$Erosion)) ^ 2)  ## total sum of squares
-rsq <- 1 - rss/tss
+#   # clean data
+#   ps <- full %>%
+#   filter(crop == "ps") %>%
+#   mutate_if(is.character, as.factor) %>%
+#   dplyr::select(c(Erosion, tillage, Contour, total_DM_lbs, slope, slopelenusle.r, sand, silt, clay, k)) %>%
+#   mutate(Contour = as.factor(Contour)) %>%
+#   distinct() %>%
+#   droplevels()
+# 
+# # null hypothesis
+# ps.best.guess <- round(mean(ps$Erosion),2) 
+# 
+# # Evaluate RMSE
+# ps.RMSE.baseline <- round(sqrt(mean((ps.best.guess-ps$Erosion)^2)),2)
+# 
+# 
+# #load model
+# ps_mod <- readRDS("modelsFromCondor/southWest/erosion/ps_erosion_southWestWI.rds")
+# ps_mod
+# 
+# ps_mod$fit$importance
+# 
+# # predictions
+# pred_ps <- ps_mod %>%
+#   predict(ps) %>%
+#   bind_cols(ps)
+# 
+# ps_rmse <- round(sqrt(mean((pred_ps$.pred - pred_ps$Erosion)^2)),3) 
+# # plot data
+# ggplot(pred_ps, aes(x = Erosion, y = .pred)) +
+#   geom_point() 
+# 
+# rss <- sum((pred_ps$.pred - pred_ps$Erosion) ^ 2)  ## residual sum of squares
+# tss <- sum((pred_ps$Erosion - mean(pred_ps$Erosion)) ^ 2)  ## total sum of squares
+# rsq <- 1 - rss/tss
 
 # pt ----------------------------------------------------------------------
 
@@ -248,8 +242,7 @@ pt.best.guess <- round(mean(pt$Erosion),2)
 pt.RMSE.baseline <- round(sqrt(mean((pt.best.guess-pt$Erosion)^2)),2)
 
 #load model
-pt_mod <- readRDS("modelOutputs/eastCentralWI/erosion/pt_erosion_eastCentralWI.rds")
-pt_mod <- readRDS("/Volumes/cgratton/scapetools/serverReady/grazeScape/modelFiles/southWestWI/pt_erosion_southWestWI.rds")
+pt_mod <- readRDS("modelOutputs/southEastWI/erosion/pt_erosion_southEastWI.rds")
 pt_mod
 
 pt_mod$fit$importance
@@ -271,39 +264,38 @@ rsq <- 1 - rss/tss
 
 # dl ----------------------------------------------------------------------
 
-# clean data
-dl <- full %>%
-  filter(crop == "dl") %>%
-  mutate_if(is.character, as.factor) %>%
-  dplyr::select(c(Erosion, density, total_DM_lbs, slope, slopelenusle.r, sand, silt, clay, k, R_factor)) %>%
-  distinct() %>%
-  droplevels()
-
-# null hypothesis
-dl.best.guess <- round(mean(dl$Erosion),2) 
-
-# Evaluate RMSE
-dl.RMSE.baseline <- round(sqrt(mean((dl.best.guess-dl$Erosion)^2)),2)
-
-#load model
-dl_mod <- readRDS("modelsFromCondor/southWest/erosion/dl_erosion_southWestWI.rds")
-dl_mod <- readRDS("/Volumes/cgratton/scapetools/serverReady/grazeScape/modelFiles/southWestWI/dl_erosion_southWestWI.rds")
-dl_mod
-dl_mod$fit$importance
-
-# predictions
-pred_dl <- dl_mod %>%
-  predict(dl) %>%
-  bind_cols(dl)
-
-dl_rmse <- round(sqrt(mean((pred_dl$.pred - pred_dl$Erosion)^2)),3) 
-# plot data
-ggplot(pred_dl, aes(x = Erosion, y = .pred)) +
-  geom_point() 
-
-
-rss <- sum((pred_dl$.pred - pred_dl$Erosion) ^ 2)  ## residual sum of squares
-tss <- sum((pred_dl$Erosion - mean(pred_dl$Erosion)) ^ 2)  ## total sum of squares
-rsq <- 1 - rss/tss
-
+# # clean data
+# dl <- full %>%
+#   filter(crop == "dl") %>%
+#   mutate_if(is.character, as.factor) %>%
+#   dplyr::select(c(Erosion, density, total_DM_lbs, slope, slopelenusle.r, sand, silt, clay, k, R_factor)) %>%
+#   distinct() %>%
+#   droplevels()
+# 
+# # null hypothesis
+# dl.best.guess <- round(mean(dl$Erosion),2) 
+# 
+# # Evaluate RMSE
+# dl.RMSE.baseline <- round(sqrt(mean((dl.best.guess-dl$Erosion)^2)),2)
+# 
+# #load model
+# dl_mod <- readRDS("modelsFromCondor/southWest/erosion/dl_erosion_southWestWI.rds")
+# dl_mod
+# dl_mod$fit$importance
+# 
+# # predictions
+# pred_dl <- dl_mod %>%
+#   predict(dl) %>%
+#   bind_cols(dl)
+# 
+# dl_rmse <- round(sqrt(mean((pred_dl$.pred - pred_dl$Erosion)^2)),3) 
+# # plot data
+# ggplot(pred_dl, aes(x = Erosion, y = .pred)) +
+#   geom_point() 
+# 
+# 
+# rss <- sum((pred_dl$.pred - pred_dl$Erosion) ^ 2)  ## residual sum of squares
+# tss <- sum((pred_dl$Erosion - mean(pred_dl$Erosion)) ^ 2)  ## total sum of squares
+# rsq <- 1 - rss/tss
+# 
 

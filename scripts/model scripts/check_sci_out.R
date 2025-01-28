@@ -41,8 +41,6 @@ cc.RMSE.baseline <- round(sqrt(mean((cc.best.guess-cc$SCI)^2)),2)
 
 #load model
 cc_mod <- readRDS("modelOutputs/southEastWI/sci/cc_sci_southEastWI.rds")
-cc_mod <- readRDS("/Volumes/cgratton/scapetools/serverReady/grazeScape/modelFiles/southWestWI/cc_sci_southWestWI.rds")
-
 cc_mod
 
 pred_cc <- cc_mod %>%
@@ -79,7 +77,6 @@ cg.RMSE.baseline <- round(sqrt(mean((cg.best.guess-cg$SCI)^2)),2)
 
 #load model
 cg_mod <- readRDS("modelOutputs/southEastWI/sci/cg_sci_southEastWI4.rds")
-cg_mod <- readRDS("/Volumes/cgratton/scapetools/serverReady/grazeScape/modelFiles/southWestWI/cg_sci_southWestWI.rds")
 cg_mod
 cg_mod$fit$importance
 
@@ -119,7 +116,6 @@ cso.RMSE.baseline <- round(sqrt(mean((cso.best.guess-cso$SCI)^2)),2)
 
 #load model
 cso_mod <- readRDS("modelOutputs/southEastWI/sci/cso_sci_southEastWI3.rds")
-cso_mod <- readRDS("/Volumes/cgratton/scapetools/serverReady/grazeScape/modelFiles/southWestWI/cso_sci_southWestWI.rds")
 cso_mod
 cso_mod$fit$importance
 
@@ -161,7 +157,6 @@ dr.RMSE.baseline <- round(sqrt(mean((dr.best.guess-dr$SCI)^2)),2)
 
 #load model
 dr_mod <- readRDS("modelOutputs/southEastWI/sci/dr_sci_southEastWI4.rds")
-dr_mod <- readRDS("/Volumes/cgratton/scapetools/serverReady/grazeScape/modelFiles/southWestWI/dr_sci_southWestWI.rds")
 dr_mod
 dr_mod$fit$importance
 
@@ -183,43 +178,42 @@ rsq <- 1 - rss/tss
 
 # ps ----------------------------------------------------------------------
 
-
-  # clean data
-  ps <- full %>%
-  mutate_if(is.character, as.factor) %>%
-  filter(crop == "ps",
-         initialP == 25) %>%
-  mutate(Contour = as.factor(Contour)) %>%
-  dplyr::select(SCI, Erosion, tillage, sand, silt, clay, Contour, total_DM_lbs) %>%
-  distinct() %>%
-  droplevels()
-
-# null hypothesis
-ps.best.guess <- round(mean(ps$SCI),2) 
-
-# Evaluate RMSE
-ps.RMSE.baseline <- round(sqrt(mean((ps.best.guess-ps$SCI)^2)),2)
-
-#load model
-ps_mod <- readRDS("modelsFromCondor/southWest/sci/ps_sci_southWestWI.rds")
-ps_mod <- readRDS("/Volumes/cgratton/scapetools/serverReady/grazeScape/modelFiles/southWestWI/ps_sci_southWestWI.rds")
-ps_mod
-
-ps_mod$fit$importance
-
-# predictions
-pred_ps <- ps_mod %>%
-  predict(ps) %>%
-  bind_cols(ps)
-
-ps_rmse <- round(sqrt(mean((pred_ps$.pred - pred_ps$SCI)^2)),3) 
-# plot data
-ggplot(pred_ps, aes(x = SCI, y = .pred)) +
-  geom_point() 
-
-rss <- sum((pred_ps$.pred - pred_ps$SCI) ^ 2)  ## residual sum of squares
-tss <- sum((pred_ps$SCI - mean(pred_ps$SCI)) ^ 2)  ## total sum of squares
-rsq <- 1 - rss/tss
+# 
+#   # clean data
+#   ps <- full %>%
+#   mutate_if(is.character, as.factor) %>%
+#   filter(crop == "ps",
+#          initialP == 25) %>%
+#   mutate(Contour = as.factor(Contour)) %>%
+#   dplyr::select(SCI, Erosion, tillage, sand, silt, clay, Contour, total_DM_lbs) %>%
+#   distinct() %>%
+#   droplevels()
+# 
+# # null hypothesis
+# ps.best.guess <- round(mean(ps$SCI),2) 
+# 
+# # Evaluate RMSE
+# ps.RMSE.baseline <- round(sqrt(mean((ps.best.guess-ps$SCI)^2)),2)
+# 
+# #load model
+# ps_mod <- readRDS("modelsFromCondor/southWest/sci/ps_sci_southWestWI.rds")
+# ps_mod
+# 
+# ps_mod$fit$importance
+# 
+# # predictions
+# pred_ps <- ps_mod %>%
+#   predict(ps) %>%
+#   bind_cols(ps)
+# 
+# ps_rmse <- round(sqrt(mean((pred_ps$.pred - pred_ps$SCI)^2)),3) 
+# # plot data
+# ggplot(pred_ps, aes(x = SCI, y = .pred)) +
+#   geom_point() 
+# 
+# rss <- sum((pred_ps$.pred - pred_ps$SCI) ^ 2)  ## residual sum of squares
+# tss <- sum((pred_ps$SCI - mean(pred_ps$SCI)) ^ 2)  ## total sum of squares
+# rsq <- 1 - rss/tss
 
 # pt ----------------------------------------------------------------------
 
@@ -243,7 +237,6 @@ pt.RMSE.baseline <- round(sqrt(mean((pt.best.guess-pt$SCI)^2)),2)
 
 #load model
 pt_mod <- readRDS("modelOutputs/southEastWI/sci/pt_sci_southEastWI.rds")
-pt_mod <- readRDS("/Volumes/cgratton/scapetools/serverReady/grazeScape/modelFiles/southWestWI/pt_sci_southWestWI.rds")
 pt_mod
 
 pt_mod$fit$importance
@@ -267,40 +260,39 @@ rsq <- 1 - rss/tss
 
 # dl ----------------------------------------------------------------------
 
-# clean data
-dl <- full%>%
-  mutate_if(is.character, as.factor) %>%
-  filter(crop == "dl",
-         initialP == 25) %>%
-  dplyr::select(SCI, Erosion, density, sand, silt, clay, total_DM_lbs) %>%
-  distinct() %>%
-  droplevels()
-
-# null hypothesis
-dl.best.guess <- round(mean(dl$SCI),2) 
-
-# Evaluate RMSE
-dl.RMSE.baseline <- round(sqrt(mean((dl.best.guess-dl$SCI)^2)),2)
-
-#load model
-dl_mod <- readRDS("modelsFromCondor/southWest/sci/dl_sci_southWestWI.rds")
-dl_mod <- readRDS("/Volumes/cgratton/scapetools/serverReady/grazeScape/modelFiles/southWestWI/dl_sci_southWestWI.rds")
-dl_mod
-dl_mod$fit$importance
-
-# predictions
-pred_dl <- dl_mod %>%
-  predict(dl) %>%
-  bind_cols(dl)
-
-dl_rmse <- round(sqrt(mean((pred_dl$.pred - pred_dl$SCI)^2)),3) 
-# plot data
-ggplot(pred_dl, aes(x = SCI, y = .pred)) +
-  geom_point() 
-
-rss <- sum((pred_dl$.pred - pred_dl$SCI) ^ 2)  ## residual sum of squares
-tss <- sum((pred_dl$SCI - mean(pred_dl$SCI)) ^ 2)  ## total sum of squares
-rsq <- 1 - rss/tss
-
+# # clean data
+# dl <- full%>%
+#   mutate_if(is.character, as.factor) %>%
+#   filter(crop == "dl",
+#          initialP == 25) %>%
+#   dplyr::select(SCI, Erosion, density, sand, silt, clay, total_DM_lbs) %>%
+#   distinct() %>%
+#   droplevels()
+# 
+# # null hypothesis
+# dl.best.guess <- round(mean(dl$SCI),2) 
+# 
+# # Evaluate RMSE
+# dl.RMSE.baseline <- round(sqrt(mean((dl.best.guess-dl$SCI)^2)),2)
+# 
+# #load model
+# dl_mod <- readRDS("modelsFromCondor/southWest/sci/dl_sci_southWestWI.rds")
+# dl_mod
+# dl_mod$fit$importance
+# 
+# # predictions
+# pred_dl <- dl_mod %>%
+#   predict(dl) %>%
+#   bind_cols(dl)
+# 
+# dl_rmse <- round(sqrt(mean((pred_dl$.pred - pred_dl$SCI)^2)),3) 
+# # plot data
+# ggplot(pred_dl, aes(x = SCI, y = .pred)) +
+#   geom_point() 
+# 
+# rss <- sum((pred_dl$.pred - pred_dl$SCI) ^ 2)  ## residual sum of squares
+# tss <- sum((pred_dl$SCI - mean(pred_dl$SCI)) ^ 2)  ## total sum of squares
+# rsq <- 1 - rss/tss
+# 
 
 

@@ -23,9 +23,9 @@ class ConvertCRS:
         print("finished converting")
 
 if __name__ == "__main__":
-    base_dir = '/Volumes/One Touch/Grassland/scapeWorkflow/rasterOutputs'
-    base_file = os.path.join(base_dir, "southEastWI", "grazeScape", "southEastWI_awc_10m.tif") # file that works
-    src_dir = os.path.join(base_dir, "southEastWI", "smartScape") # file of folders that don't work
+    base_dir = '/Volumes/One Touch/Grassland/GS_SS_workflow/rasterOutputs'
+    base_file = os.path.join(base_dir, "smartScape", "southEastWI", "modelInputs", "southEastWI_awc_30m.tif") # file that works from same region and same resolution
+    src_dir = os.path.join(base_dir, "smartScape", "southEastWI", "modelInputs") # file of folders that don't work
     # Get the current working directory
     # Print the current working directory
     print(base_file)
