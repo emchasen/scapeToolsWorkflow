@@ -1,5 +1,6 @@
 # scapeToolsWorkflow
 all of the scripts needed to create a new region in grazescape and smartscape
+find detailed instructions in the file 'instructions.txt'
 
 1. Download SSURGO data 
 
